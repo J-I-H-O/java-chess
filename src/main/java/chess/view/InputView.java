@@ -12,7 +12,9 @@ public class InputView {
 
     public List<String> readGameCommand() {
         String rawInput = scanner.nextLine();
-        if (GameCommand.isStartCommand(rawInput) || GameCommand.isEndCommand(rawInput)) {
+        if (GameCommand.isStartCommand(rawInput) ||
+                GameCommand.isEndCommand(rawInput) ||
+                GameCommand.isStatusCommand(rawInput)) {
             return List.of(rawInput);
         }
         if (GameCommand.isMovePattern(rawInput)) {
