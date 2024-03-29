@@ -22,6 +22,8 @@ public abstract class Piece {
 
     abstract public boolean isEmpty();
 
+    public abstract double getPieceScore();
+
     final protected List<Position> findPathOfSingleMovePiece(final Position source, final Position target) {
         List<Position> positions = new ArrayList<>();
 
@@ -82,5 +84,9 @@ public abstract class Piece {
 
     final public boolean isBlack() {
         return this.color == Color.BLACK;
+    }
+
+    public boolean isSameColor(final Color color) {
+        return this.color == color;
     }
 }

@@ -48,4 +48,9 @@ public class King extends Piece {
     public boolean isEmpty() {
         return false;
     }
+
+    @Override
+    public double getPieceScore() {
+        return 0;
+    }
 }

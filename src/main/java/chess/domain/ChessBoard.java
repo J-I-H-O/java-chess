@@ -78,6 +78,31 @@ public class ChessBoard {
         chessBoard.put(source, Empty.of());
     }
 
+    // TOOD: 계산 알고리즘 고민해보기
+    public double calculateScoreByColor(final char startFile, final char endFile,
+                                        final int startRank, final int endRank, final Color color) {
+        double score = 0;
+
+        for (char currentFile = startFile; currentFile <= endFile; currentFile++) {
+            int pawnCount = 0;
+            for (int currentRank = startRank; currentRank <= endRank; currentRank++) {
+                Position currentPosition = Position.of(currentFile, currentRank);
+                Piece currentPiece = chessBoard.get(currentPosition);
+                // TODO: piece에 isSameColor 를 만들어주는게 나을듯. 조건 줄이게
+                if (currentPiece.isSameColor(color)) {
+                    if (currentPiece.isPawn()) {
+                        pawnCount++;
+                    }
+                    score += currentPiece.getPieceScore();
+                }
+            }
+            if (pawnCount == 1) {
+                score += 0.5;
+            }
+        }
+        return score;
+    }
+
     public List<Piece> findAllPieces() {
         return chessBoard.values()
                 .stream()
