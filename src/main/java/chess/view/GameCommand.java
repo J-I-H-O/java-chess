@@ -1,49 +1,37 @@
 package chess.view;
 
-import java.util.regex.Pattern;
+import java.util.Arrays;
 
 public enum GameCommand {
 
-    START("start"),
-    END("end"),
-    MOVE("move"),
-    STATUS("status"),
+    START("start", true, false),
+    END("end", true, true),
+    MOVE("move", false, true),
+    STATUS("status", false, true),
     ;
 
-    private static final Pattern MOVE_COMMAND_PATTERN = Pattern.compile("^move [a-h][1-8] [a-h][1-8]$");
-
     private final String value;
+    private final boolean canExecuteBeforeGame;
+    private final boolean canExecuteDuringGame;
 
-    GameCommand(final String value) {
+    GameCommand(final String value, final boolean canExecuteBeforeGame, final boolean canExecuteDuringGame) {
         this.value = value;
+        this.canExecuteBeforeGame = canExecuteBeforeGame;
+        this.canExecuteDuringGame = canExecuteDuringGame;
     }
 
-    public static boolean isStartCommand(final String rawInput) {
-        return START.getValue().equals(rawInput);
+    public static GameCommand findCommand(final String rawCommand) {
+        return Arrays.stream(values())
+                .filter(command -> command.value.equals(rawCommand))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("[ERROR] 존재하지 않는 명령어입니다."));
     }
 
-    public static boolean isEndCommand(final String rawInput) {
-        return END.getValue().equals(rawInput);
+    public boolean canExecuteBeforeGame() {
+        return canExecuteBeforeGame;
     }
 
-    public static boolean isMoveCommand(final String rawInput) {
-        return MOVE.getValue().equals(rawInput);
-    }
-
-    public static boolean isStatusCommand(String rawInput) {
-        return STATUS.getValue().equals(rawInput);
-    }
-
-    public static boolean isMovePattern(final String rawInput) {
-        return MOVE_COMMAND_PATTERN.matcher(rawInput).matches();
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    @Override
-    public String toString() {
-        return this.value;
+    public boolean canExecuteDuringGame() {
+        return canExecuteDuringGame;
     }
 }
