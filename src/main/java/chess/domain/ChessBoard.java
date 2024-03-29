@@ -1,17 +1,23 @@
 package chess.domain;
 
+import chess.domain.piece.Color;
 import chess.domain.piece.Direction;
 import chess.domain.piece.Empty;
 import chess.domain.piece.Piece;
+import chess.domain.piece.PieceType;
 import java.util.List;
 import java.util.Map;
 
 public class ChessBoard {
 
     private final Map<Position, Piece> chessBoard;
+    private Color turn;
+    private boolean isKingDead;
 
     public ChessBoard(final Map<Position, Piece> chessBoard) {
         this.chessBoard = chessBoard;
+        this.turn = Color.WHITE;
+        this.isKingDead = false;
     }
 
     public void move(final Position source, final Position target) {
@@ -37,6 +43,12 @@ public class ChessBoard {
         if (piece.isAlly(findPieceByPosition(target))) {
             throw new IllegalArgumentException("[ERROR] 이동하려는 위치에 아군 기물이 존재합니다.");
         }
+        if (this.turn == Color.WHITE && piece.isBlack()) {
+            throw new IllegalArgumentException("[ERROR] 지금은 WHITE의 턴 입니다.");
+        }
+        if (this.turn == Color.BLACK && !piece.isBlack()) {
+            throw new IllegalArgumentException("[ERROR] 지금은 BLACK의 턴 입니다.");
+        }
     }
 
     private void validateObstacleOnPath(final Position target, final Position currentPosition) {
@@ -55,6 +67,13 @@ public class ChessBoard {
     }
 
     private void movePiece(final Position source, final Position target, final Piece piece) {
+        // King이 죽으면 게임 종료
+        if (PieceType.KING.name().equals(chessBoard.get(target).getOwnPieceTypeName())) {
+            isKingDead = true;
+        }
+        // 턴 넘기기
+        this.turn = Color.switchColor(this.turn);
+
         chessBoard.put(target, piece);
         chessBoard.put(source, Empty.of());
     }
@@ -67,5 +86,9 @@ public class ChessBoard {
 
     public Piece findPieceByPosition(final Position position) {
         return chessBoard.get(position);
+    }
+
+    public boolean isKingDead() {
+        return isKingDead;
     }
 }

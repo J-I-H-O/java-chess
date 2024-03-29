@@ -34,7 +34,7 @@ public class ChessController {
     }
 
     private void playTurn(ChessBoard chessBoard, String gameCommand, List<String> commandArguments) {
-        while (!GameCommand.isEndCommand(gameCommand)) {
+        while (!GameCommand.isEndCommand(gameCommand) && !chessBoard.isKingDead()) {
             playMoveCommand(chessBoard, gameCommand, commandArguments);
             outputView.printChessBoard(chessBoard);
 
