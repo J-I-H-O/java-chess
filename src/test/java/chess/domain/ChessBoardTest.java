@@ -88,7 +88,7 @@ class ChessBoardTest {
     void cannotReachTarget() {
         Map<Position, Piece> positionPiece = new LinkedHashMap<>();
         Position sourcePosition = Position.of('a', 1);
-        positionPiece.put(sourcePosition, King.colorOf(Color.BLACK));
+        positionPiece.put(sourcePosition, King.colorOf(Color.WHITE));
         Position targetPosition = Position.of('a', 3);
         positionPiece.put(targetPosition, Empty.of());
 
@@ -104,7 +104,7 @@ class ChessBoardTest {
     void knightCanJumpOverPiece() {
         Map<Position, Piece> positionPiece = new LinkedHashMap<>();
         Position sourcePosition = Position.of('a', 1);
-        positionPiece.put(sourcePosition, Knight.colorOf(Color.BLACK));
+        positionPiece.put(sourcePosition, Knight.colorOf(Color.WHITE));
         Position obstaclePosition = Position.of('a', 2);
         positionPiece.put(obstaclePosition, Pawn.colorOf(Color.BLACK));
         Position targetPosition = Position.of('b', 3);
@@ -121,7 +121,7 @@ class ChessBoardTest {
     void invalidDirection() {
         Map<Position, Piece> positionPiece = new LinkedHashMap<>();
         Position sourcePosition = Position.of('a', 1);
-        positionPiece.put(sourcePosition, Rook.colorOf(Color.BLACK));
+        positionPiece.put(sourcePosition, Rook.colorOf(Color.WHITE));
         Position targetPosition = Position.of('c', 3);
         positionPiece.put(targetPosition, Empty.of());
 
@@ -137,10 +137,10 @@ class ChessBoardTest {
     void kill() {
         Map<Position, Piece> positionPiece = new LinkedHashMap<>();
         Position sourcePosition = Position.of('a', 1);
-        Rook sourcePiece = Rook.colorOf(Color.BLACK);
+        Rook sourcePiece = Rook.colorOf(Color.WHITE);
         positionPiece.put(sourcePosition, sourcePiece);
         Position targetPosition = Position.of('a', 3);
-        Rook targetPiece = Rook.colorOf(Color.WHITE);
+        Rook targetPiece = Rook.colorOf(Color.BLACK);
         positionPiece.put(targetPosition, targetPiece);
 
         positionPiece.put(Position.of('a', 2), Empty.of());
@@ -157,7 +157,7 @@ class ChessBoardTest {
     void fromEdgeToEdge() {
         Map<Position, Piece> positionPiece = new LinkedHashMap<>();
         Position sourcePosition = Position.of('a', 1);
-        positionPiece.put(sourcePosition, Queen.colorOf(Color.BLACK));
+        positionPiece.put(sourcePosition, Queen.colorOf(Color.WHITE));
 
         for (int i = 2; i <= 8; i++) {
             Position passThroughPosition = Position.of('a', i);
@@ -276,8 +276,8 @@ class ChessBoardTest {
         Map<Position, Piece> positionPiece = new LinkedHashMap<>();
         Position sourcePosition = Position.of('a', 2);
         Position targetPosition = Position.of('b', 3);
-        positionPiece.put(sourcePosition, Bishop.colorOf(Color.BLACK));
-        positionPiece.put(targetPosition, King.colorOf(Color.WHITE));
+        positionPiece.put(sourcePosition, Bishop.colorOf(Color.WHITE));
+        positionPiece.put(targetPosition, King.colorOf(Color.BLACK));
 
         ChessBoard chessBoard = new ChessBoard(positionPiece);
         chessBoard.move(sourcePosition, targetPosition);
