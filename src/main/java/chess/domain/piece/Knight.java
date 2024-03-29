@@ -47,4 +47,9 @@ public class Knight extends Piece {
     public boolean isEmpty() {
         return false;
     }
+
+    @Override
+    public double getPieceScore() {
+        return 2.5;
+    }
 }

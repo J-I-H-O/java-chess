@@ -70,4 +70,9 @@ public class Pawn extends Piece {
     public boolean isEmpty() {
         return false;
     }
+
+    @Override
+    public double getPieceScore() {
+        return 0.5;
+    }
 }
