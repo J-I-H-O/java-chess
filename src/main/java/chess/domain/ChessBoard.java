@@ -78,7 +78,8 @@ public class ChessBoard {
         chessBoard.put(source, Empty.of());
     }
 
-    // TOOD: 계산 알고리즘 고민해보기
+    // TODO: 계산 알고리즘 고민해보기
+    //       굳이 인자로 모두 받아야 할까?
     public double calculateScoreByColor(final char startFile, final char endFile,
                                         final int startRank, final int endRank, final Color color) {
         double score = 0;

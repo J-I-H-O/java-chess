@@ -7,6 +7,7 @@ public enum GameCommand {
     START("start"),
     END("end"),
     MOVE("move"),
+    STATUS("status"),
     ;
 
     private static final Pattern MOVE_COMMAND_PATTERN = Pattern.compile("^move [a-h][1-8] [a-h][1-8]$");
@@ -27,6 +28,10 @@ public enum GameCommand {
 
     public static boolean isMoveCommand(final String rawInput) {
         return MOVE.getValue().equals(rawInput);
+    }
+
+    public static boolean isStatusCommand(String rawInput) {
+        return STATUS.getValue().equals(rawInput);
     }
 
     public static boolean isMovePattern(final String rawInput) {

@@ -3,6 +3,7 @@ package chess.controller;
 import chess.domain.ChessBoard;
 import chess.domain.ChessBoardFactory;
 import chess.domain.Position;
+import chess.domain.piece.Color;
 import chess.view.GameCommand;
 import chess.view.InputView;
 import chess.view.OutputView;
@@ -29,14 +30,23 @@ public class ChessController {
 
         List<String> commandArguments = repeat(this::readInitialCommand);
         String gameCommand = commandArguments.get(COMMAND_INDEX);
+        outputView.printChessBoard(chessBoard);
 
         repeat(() -> playTurn(chessBoard, gameCommand, commandArguments));
     }
 
     private void playTurn(ChessBoard chessBoard, String gameCommand, List<String> commandArguments) {
+        // TODO: 현재 King이 죽으면 바로 게임이 끝나지 않고 추가 명령어를 입력해야 하는 상황. 수정 필요.
         while (!GameCommand.isEndCommand(gameCommand) && !chessBoard.isKingDead()) {
-            playMoveCommand(chessBoard, gameCommand, commandArguments);
-            outputView.printChessBoard(chessBoard);
+            if (GameCommand.isMoveCommand(gameCommand)) {
+                playMoveCommand(chessBoard, gameCommand, commandArguments);
+                outputView.printChessBoard(chessBoard);
+            }
+            if (GameCommand.isStatusCommand(gameCommand)) {
+                double blackScore = chessBoard.calculateScoreByColor('a', 'h', 1, 8, Color.BLACK);
+                double whiteScore = chessBoard.calculateScoreByColor('a', 'h', 1, 8, Color.WHITE);
+                outputView.printScoreStatus(blackScore, whiteScore);
+            }
 
             commandArguments = readInGameCommand();
             gameCommand = commandArguments.get(COMMAND_INDEX);
@@ -58,7 +68,7 @@ public class ChessController {
         List<String> commandArguments = inputView.readGameCommand();
         String gameCommand = commandArguments.get(COMMAND_INDEX);
 
-        if (GameCommand.isMoveCommand(gameCommand)) {
+        if (GameCommand.isMoveCommand(gameCommand) || GameCommand.isStatusCommand(gameCommand)) {
             throw new IllegalArgumentException("[ERROR] 먼저 게임을 시작해야 합니다.");
         }
 
