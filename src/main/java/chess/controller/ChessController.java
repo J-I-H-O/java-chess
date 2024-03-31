@@ -3,6 +3,7 @@ package chess.controller;
 import chess.domain.ChessBoard;
 import chess.domain.ChessBoardFactory;
 import chess.domain.Position;
+import chess.domain.ScoreCalculator;
 import chess.domain.piece.Color;
 import chess.view.CommandArguments;
 import chess.view.GameCommand;
@@ -68,8 +69,9 @@ public class ChessController {
     }
 
     private void executeStatusCommand(final ChessBoard chessBoard) {
-        double blackScore = chessBoard.calculateScoreByColor('a', 'h', 1, 8, Color.BLACK);
-        double whiteScore = chessBoard.calculateScoreByColor('a', 'h', 1, 8, Color.WHITE);
+        ScoreCalculator scoreCalculator = new ScoreCalculator();
+        double blackScore = scoreCalculator.calculateScore(chessBoard.filterPiecesByColor(Color.BLACK));
+        double whiteScore = scoreCalculator.calculateScore(chessBoard.filterPiecesByColor(Color.WHITE));
         outputView.printScoreStatus(blackScore, whiteScore);
     }
 
