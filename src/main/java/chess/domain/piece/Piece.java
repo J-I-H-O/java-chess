@@ -16,7 +16,7 @@ public abstract class Piece {
         this.color = color;
     }
 
-    abstract public List<Position> findPath(final Position source, final Position target);
+    abstract public List<Position> findPath(final Position source, final Position target, final Direction direction);
 
     abstract public String getOwnPieceTypeName();
 
@@ -24,10 +24,10 @@ public abstract class Piece {
 
     public abstract double getPieceScore();
 
-    final protected List<Position> findPathOfSingleMovePiece(final Position source, final Position target) {
+    final protected List<Position> findPathOfSingleMovePiece(final Position source, final Position target,
+                                                             final Direction direction) {
         List<Position> positions = new ArrayList<>();
 
-        Direction direction = source.calculateDirection(target);
         validateDirection(direction);
 
         Position currentPosition = source;
@@ -39,10 +39,10 @@ public abstract class Piece {
         return positions;
     }
 
-    final protected List<Position> findPathOfMultipleMovePiece(final Position source, final Position target) {
+    final protected List<Position> findPathOfMultipleMovePiece(final Position source, final Position target,
+                                                               final Direction direction) {
         List<Position> positions = new ArrayList<>();
 
-        Direction direction = source.calculateDirection(target);
         validateDirection(direction);
 
         Position currentPosition = source;
@@ -71,7 +71,11 @@ public abstract class Piece {
     }
 
     final public boolean isPawn() {
-        return getOwnPieceTypeName().equals(PieceType.PAWN.name());
+        return PieceType.PAWN.name().equals(getOwnPieceTypeName());
+    }
+
+    final public boolean isKing() {
+        return PieceType.KING.name().equals(getOwnPieceTypeName());
     }
 
     final public boolean isAlly(final Piece piece) {
@@ -82,11 +86,7 @@ public abstract class Piece {
         return this.color == piece.color;
     }
 
-    final public boolean isBlack() {
-        return this.color == Color.BLACK;
-    }
-
-    public boolean isSameColor(final Color color) {
+    public boolean isSameColorWith(final Color color) {
         return this.color == color;
     }
 }

@@ -1,5 +1,6 @@
 package chess.view;
 
+import chess.domain.piece.Color;
 import chess.domain.piece.Piece;
 import java.util.Arrays;
 
@@ -23,7 +24,7 @@ public enum PieceExpression {
     public static String mapToExpression(final Piece piece) {
         String foundExpression = findMatchedExpression(piece);
 
-        if (piece.isBlack()) {
+        if (piece.isSameColorWith(Color.BLACK)) {
             return foundExpression.toUpperCase();
         }
 

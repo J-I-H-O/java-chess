@@ -35,8 +35,8 @@ public class King extends Piece {
     }
 
     @Override
-    public List<Position> findPath(final Position source, final Position target) {
-        return findPathOfSingleMovePiece(source, target);
+    public List<Position> findPath(final Position source, final Position target, final Direction direction) {
+        return findPathOfSingleMovePiece(source, target, direction);
     }
 
     @Override

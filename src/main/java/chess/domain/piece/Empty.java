@@ -16,7 +16,7 @@ public class Empty extends Piece {
     }
 
     @Override
-    public List<Position> findPath(final Position source, final Position target) {
+    public List<Position> findPath(final Position source, final Position target, final Direction direction) {
         throw new IllegalArgumentException("[ERROR] 빈 기물은 이동할 수 없습니다.");
     }
 

@@ -34,8 +34,8 @@ public class Queen extends Piece {
     }
 
     @Override
-    public List<Position> findPath(final Position source, final Position target) {
-        return findPathOfMultipleMovePiece(source, target);
+    public List<Position> findPath(final Position source, final Position target, final Direction direction) {
+        return findPathOfMultipleMovePiece(source, target, direction);
     }
 
     @Override

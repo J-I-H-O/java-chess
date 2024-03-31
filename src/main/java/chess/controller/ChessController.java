@@ -26,7 +26,7 @@ public class ChessController {
         CommandArguments commandArguments = repeatUntilSuccess(() -> readCommandBeforeGame());
         GameCommand gameCommand = commandArguments.parseCommand();
 
-        while (gameCommand != GameCommand.END && !chessBoard.isKingDead()) {
+        while (gameCommand != GameCommand.END && !chessBoard.isGameOver()) {
             outputView.printChessBoard(chessBoard);
             commandArguments = repeatUntilSuccess(() -> readAndExecuteCommandDuringGame(chessBoard));
             gameCommand = commandArguments.parseCommand();
