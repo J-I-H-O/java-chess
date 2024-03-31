@@ -2,6 +2,7 @@ package chess.controller;
 
 import chess.domain.ChessBoard;
 import chess.domain.ChessBoardFactory;
+import chess.domain.ChessGame;
 import chess.domain.Position;
 import chess.domain.ScoreCalculator;
 import chess.domain.piece.Color;
@@ -23,13 +24,14 @@ public class ChessController {
 
     public void run() {
         ChessBoard chessBoard = ChessBoardFactory.makeChessBoard();
+        ChessGame chessGame = new ChessGame(chessBoard, Color.WHITE);
         outputView.printCommandInformation();
         CommandArguments commandArguments = repeatUntilSuccess(() -> readCommandBeforeGame());
         GameCommand gameCommand = commandArguments.parseCommand();
 
-        while (gameCommand != GameCommand.END && !chessBoard.isGameOver()) {
+        while (gameCommand != GameCommand.END && !chessGame.isGameOver()) {
             outputView.printChessBoard(chessBoard);
-            commandArguments = repeatUntilSuccess(() -> readAndExecuteCommandDuringGame(chessBoard));
+            commandArguments = repeatUntilSuccess(() -> readAndExecuteCommandDuringGame(chessGame));
             gameCommand = commandArguments.parseCommand();
         }
     }
@@ -42,36 +44,36 @@ public class ChessController {
         return commandArguments;
     }
 
-    private CommandArguments readAndExecuteCommandDuringGame(final ChessBoard chessBoard) {
+    private CommandArguments readAndExecuteCommandDuringGame(final ChessGame chessGame) {
         CommandArguments commandArguments = inputView.readGameCommand();
         GameCommand gameCommand = commandArguments.parseCommand();
         validateCommandDuringGame(gameCommand);
-        executeCommand(gameCommand, commandArguments, chessBoard);
+        executeCommand(gameCommand, commandArguments, chessGame);
 
         return commandArguments;
     }
 
     private void executeCommand(final GameCommand gameCommand,
                                 final CommandArguments commandArguments,
-                                final ChessBoard chessBoard) {
+                                final ChessGame chessGame) {
         if (gameCommand == GameCommand.MOVE) {
-            executeMoveCommand(commandArguments, chessBoard);
+            executeMoveCommand(commandArguments, chessGame);
         }
         if (gameCommand == GameCommand.STATUS) {
-            executeStatusCommand(chessBoard);
+            executeStatusCommand(chessGame);
         }
     }
 
-    private void executeMoveCommand(final CommandArguments commandArguments, final ChessBoard chessBoard) {
+    private void executeMoveCommand(final CommandArguments commandArguments, final ChessGame chessGame) {
         Position sourcePosition = Position.from(commandArguments.getFirstArgument());
         Position targetPosition = Position.from(commandArguments.getSecondArgument());
-        chessBoard.move(sourcePosition, targetPosition);
+        chessGame.move(sourcePosition, targetPosition);
     }
 
-    private void executeStatusCommand(final ChessBoard chessBoard) {
+    private void executeStatusCommand(final ChessGame chessGame) {
         ScoreCalculator scoreCalculator = new ScoreCalculator();
-        double blackScore = scoreCalculator.calculateScore(chessBoard.filterPiecesByColor(Color.BLACK));
-        double whiteScore = scoreCalculator.calculateScore(chessBoard.filterPiecesByColor(Color.WHITE));
+        double blackScore = chessGame.calculateScoreByColor(scoreCalculator, Color.BLACK);
+        double whiteScore = chessGame.calculateScoreByColor(scoreCalculator, Color.WHITE);
         outputView.printScoreStatus(blackScore, whiteScore);
     }
 

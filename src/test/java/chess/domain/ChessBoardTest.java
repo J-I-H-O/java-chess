@@ -282,24 +282,6 @@ class ChessBoardTest {
         ChessBoard chessBoard = new ChessBoard(positionPiece);
         chessBoard.move(sourcePosition, targetPosition);
 
-        assertThat(chessBoard.isGameOver()).isTrue();
-    }
-
-    @Test
-    @DisplayName("연속해서 같은 색의 기물을 움직일 수 없다.")
-    void cannotMoveSameColorInARow() {
-        Map<Position, Piece> positionPiece = new LinkedHashMap<>();
-        Position sourcePosition = Position.of('a', 2);
-        Position passThroughPosition = Position.of('a', 3);
-        Position targetPosition = Position.of('a', 4);
-        positionPiece.put(sourcePosition, Pawn.colorOf(Color.WHITE));
-        positionPiece.put(passThroughPosition, Empty.of());
-        positionPiece.put(targetPosition, Empty.of());
-
-        ChessBoard chessBoard = new ChessBoard(positionPiece);
-        chessBoard.move(sourcePosition, passThroughPosition);
-
-        assertThatCode(() -> chessBoard.move(passThroughPosition, targetPosition))
-                .isExactlyInstanceOf(IllegalArgumentException.class);
+        assertThat(chessBoard.isKingDead()).isTrue();
     }
 }

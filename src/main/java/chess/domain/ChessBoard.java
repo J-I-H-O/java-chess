@@ -11,13 +11,11 @@ import java.util.stream.Collectors;
 public class ChessBoard {
 
     private final Map<Position, Piece> chessBoard;
-    private boolean isGameOver;
-    private Color turn;
+    private boolean isKingDead;
 
     public ChessBoard(final Map<Position, Piece> chessBoard) {
         this.chessBoard = chessBoard;
-        this.isGameOver = false;
-        this.turn = Color.WHITE;
+        this.isKingDead = false;
     }
 
     public void move(final Position source, final Position target) {
@@ -27,9 +25,8 @@ public class ChessBoard {
         validatePiecePath(source, target, direction);
         validatePawnDiagonalMove(source, target, direction);
 
-        checkGameOver(target);
+        checkKingDead(target);
         movePiece(source, target);
-        this.turn = Color.switchColor(this.turn);
     }
 
     private void movePiece(final Position source, final Position target) {
@@ -37,10 +34,10 @@ public class ChessBoard {
         chessBoard.put(source, Empty.of());
     }
 
-    private void checkGameOver(final Position targetPosition) {
+    private void checkKingDead(final Position targetPosition) {
         Piece targetPiece = chessBoard.get(targetPosition);
         if (targetPiece.isKing()) {
-            this.isGameOver = true;
+            this.isKingDead = true;
         }
     }
 
@@ -56,12 +53,6 @@ public class ChessBoard {
         }
         if (sourcePiece.isAlly(targetPiece)) {
             throw new IllegalArgumentException("[ERROR] 이동하려는 위치에 아군 기물이 존재합니다.");
-        }
-        if (this.turn == Color.WHITE && sourcePiece.isSameColorWith(Color.BLACK)) {
-            throw new IllegalArgumentException("[ERROR] 지금은 WHITE의 턴 입니다.");
-        }
-        if (this.turn == Color.BLACK && sourcePiece.isSameColorWith(Color.WHITE)) {
-            throw new IllegalArgumentException("[ERROR] 지금은 BLACK의 턴 입니다.");
         }
     }
 
@@ -107,7 +98,7 @@ public class ChessBoard {
         return chessBoard.get(position);
     }
 
-    public boolean isGameOver() {
-        return isGameOver;
+    public boolean isKingDead() {
+        return isKingDead;
     }
 }
