@@ -34,12 +34,10 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public List<Position> findPath(final Position source, final Position target) {
-        List<Position> positions = new ArrayList<>();
-
-        Direction direction = source.calculateDirection(target);
+    public List<Position> findPath(final Position source, final Position target, final Direction direction) {
         validateDirection(direction);
 
+        List<Position> positions = new ArrayList<>();
         Position currentPosition = source;
         currentPosition = currentPosition.moveTowardDirection(direction);
         positions.add(currentPosition);
@@ -48,14 +46,13 @@ public class Pawn extends Piece {
             currentPosition = currentPosition.moveTowardDirection(direction);
             positions.add(currentPosition);
         }
-
         validateReachability(target, currentPosition);
 
         return positions;
     }
 
     private boolean isOnInitialPosition(final Position position) {
-        if (isBlack()) {
+        if (isSameColorWith(Color.BLACK)) {
             return position.isSameRank(BLACK_PAWN_INITIAL_RANK);
         }
         return position.isSameRank(WHITE_PAWN_INITIAL_RANK);

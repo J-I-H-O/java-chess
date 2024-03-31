@@ -282,7 +282,7 @@ class ChessBoardTest {
         ChessBoard chessBoard = new ChessBoard(positionPiece);
         chessBoard.move(sourcePosition, targetPosition);
 
-        assertThat(chessBoard.isKingDead()).isTrue();
+        assertThat(chessBoard.isGameOver()).isTrue();
     }
 
     @Test
