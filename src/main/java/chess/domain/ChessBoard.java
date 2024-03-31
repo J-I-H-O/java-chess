@@ -6,6 +6,7 @@ import chess.domain.piece.Empty;
 import chess.domain.piece.Piece;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ChessBoard {
 
@@ -89,29 +90,11 @@ public class ChessBoard {
         }
     }
 
-    // TODO: 계산 알고리즘 고민해보기
-    //       굳이 인자로 모두 받아야 할까?
-    public double calculateScoreByColor(final char startFile, final char endFile,
-                                        final int startRank, final int endRank, final Color color) {
-        double score = 0;
-
-        for (char currentFile = startFile; currentFile <= endFile; currentFile++) {
-            int pawnCount = 0;
-            for (int currentRank = startRank; currentRank <= endRank; currentRank++) {
-                Position currentPosition = Position.of(currentFile, currentRank);
-                Piece currentPiece = chessBoard.get(currentPosition);
-                if (currentPiece.isSameColorWith(color)) {
-                    if (currentPiece.isPawn()) {
-                        pawnCount++;
-                    }
-                    score += currentPiece.getPieceScore();
-                }
-            }
-            if (pawnCount == 1) {
-                score += 0.5;
-            }
-        }
-        return score;
+    public Map<Position, Piece> filterPiecesByColor(final Color color) {
+        return chessBoard.entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().isSameColorWith(color))
+                .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue()));
     }
 
     public List<Piece> findAllPieces() {
