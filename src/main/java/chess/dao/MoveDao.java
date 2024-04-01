@@ -35,11 +35,21 @@ public class MoveDao {
             ArrayList<MoveResponse> moves = new ArrayList<>();
             while (resultSet.next()) {
                 moves.add(MoveResponse.of(
-                        resultSet.getLong("id"),
                         resultSet.getString("source"),
                         resultSet.getString("target")));
             }
             return moves;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteAll() {
+        String query = "DELETE FROM move";
+
+        try (Connection connection = DbConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
