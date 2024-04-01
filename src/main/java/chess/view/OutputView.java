@@ -1,6 +1,7 @@
 package chess.view;
 
 import chess.domain.ChessBoard;
+import chess.domain.piece.Color;
 import chess.domain.piece.Piece;
 import java.util.List;
 
@@ -32,6 +33,10 @@ public class OutputView {
         if (blackScore == whiteScore) {
             System.out.println(String.format("BLACK: %.2f점, WHITE: %.2f점으로 동점입니다.", blackScore, whiteScore));
         }
+    }
+
+    public static void printWinner(final Color winnerColor) {
+        System.out.println(String.format("게임 종료: 승자는 %s입니다.", winnerColor));
     }
 
     public static void printErrorMessage(final String message) {

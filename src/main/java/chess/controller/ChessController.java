@@ -27,12 +27,18 @@ public class ChessController {
         OutputView.printCommandInformation();
         CommandArguments commandArguments = repeatUntilSuccess(() -> readCommandBeforeGame());
         GameCommand gameCommand = commandArguments.parseCommand();
+
         chessGameService.loadMoveHistory(chessGame);
 
         while (gameCommand != GameCommand.END && !chessGame.isGameOver()) {
             OutputView.printChessBoard(chessBoard);
             commandArguments = repeatUntilSuccess(() -> readAndExecuteCommandDuringGame(chessGame));
             gameCommand = commandArguments.parseCommand();
+        }
+
+        if (chessGame.isGameOver()) {
+            OutputView.printWinner(chessGame.getCurrentTurnColor());
+            chessGameService.resetGame();
         }
     }
 

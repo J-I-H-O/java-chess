@@ -15,6 +15,10 @@ public class ChessGame {
     public void move(final Position source, final Position target) {
         validateTurn(source, this.turnColor);
         chessBoard.move(source, target);
+
+        if (chessBoard.isKingDead()) {
+            return;
+        }
         this.turnColor = Color.switchColor(this.turnColor);
     }
 
@@ -30,5 +34,9 @@ public class ChessGame {
 
     public boolean isGameOver() {
         return chessBoard.isKingDead();
+    }
+
+    public Color getCurrentTurnColor() {
+        return this.turnColor;
     }
 }
