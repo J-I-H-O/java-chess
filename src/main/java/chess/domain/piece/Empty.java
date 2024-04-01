@@ -5,14 +5,10 @@ import java.util.List;
 
 public class Empty extends Piece {
 
-    private static final Empty empty = new Empty();
+    public static final Empty EMPTY = new Empty();
 
     private Empty() {
         super(null);
-    }
-
-    public static Empty of() {
-        return empty;
     }
 
     @Override

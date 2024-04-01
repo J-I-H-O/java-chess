@@ -21,8 +21,8 @@ public class ChessGameTest {
         Position passThroughPosition = Position.of('a', 3);
         Position targetPosition = Position.of('a', 4);
         positionPiece.put(sourcePosition, Pawn.colorOf(Color.WHITE));
-        positionPiece.put(passThroughPosition, Empty.of());
-        positionPiece.put(targetPosition, Empty.of());
+        positionPiece.put(passThroughPosition, Empty.EMPTY);
+        positionPiece.put(targetPosition, Empty.EMPTY);
 
         ChessBoard chessBoard = new ChessBoard(positionPiece);
         ChessGame chessGame = new ChessGame(chessBoard, Color.WHITE);

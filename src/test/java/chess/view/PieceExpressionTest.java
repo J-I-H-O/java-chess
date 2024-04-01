@@ -43,7 +43,7 @@ class PieceExpressionTest {
                 Arguments.of(Bishop.colorOf(WHITE), "b"),
                 Arguments.of(Knight.colorOf(WHITE), "n"),
                 Arguments.of(Pawn.colorOf(WHITE), "p"),
-                Arguments.of(Empty.of(), ".")
+                Arguments.of(Empty.EMPTY, ".")
         );
     }
 }

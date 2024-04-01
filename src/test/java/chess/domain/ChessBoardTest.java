@@ -90,7 +90,7 @@ class ChessBoardTest {
         Position sourcePosition = Position.of('a', 1);
         positionPiece.put(sourcePosition, King.colorOf(Color.WHITE));
         Position targetPosition = Position.of('a', 3);
-        positionPiece.put(targetPosition, Empty.of());
+        positionPiece.put(targetPosition, Empty.EMPTY);
 
         ChessBoard chessBoard = new ChessBoard(positionPiece);
 
@@ -108,7 +108,7 @@ class ChessBoardTest {
         Position obstaclePosition = Position.of('a', 2);
         positionPiece.put(obstaclePosition, Pawn.colorOf(Color.BLACK));
         Position targetPosition = Position.of('b', 3);
-        positionPiece.put(targetPosition, Empty.of());
+        positionPiece.put(targetPosition, Empty.EMPTY);
 
         ChessBoard chessBoard = new ChessBoard(positionPiece);
 
@@ -123,7 +123,7 @@ class ChessBoardTest {
         Position sourcePosition = Position.of('a', 1);
         positionPiece.put(sourcePosition, Rook.colorOf(Color.WHITE));
         Position targetPosition = Position.of('c', 3);
-        positionPiece.put(targetPosition, Empty.of());
+        positionPiece.put(targetPosition, Empty.EMPTY);
 
         ChessBoard chessBoard = new ChessBoard(positionPiece);
 
@@ -143,7 +143,7 @@ class ChessBoardTest {
         Rook targetPiece = Rook.colorOf(Color.BLACK);
         positionPiece.put(targetPosition, targetPiece);
 
-        positionPiece.put(Position.of('a', 2), Empty.of());
+        positionPiece.put(Position.of('a', 2), Empty.EMPTY);
 
         ChessBoard chessBoard = new ChessBoard(positionPiece);
         chessBoard.move(sourcePosition, targetPosition);
@@ -161,7 +161,7 @@ class ChessBoardTest {
 
         for (int i = 2; i <= 8; i++) {
             Position passThroughPosition = Position.of('a', i);
-            positionPiece.put(passThroughPosition, Empty.of());
+            positionPiece.put(passThroughPosition, Empty.EMPTY);
         }
 
         ChessBoard chessBoard = new ChessBoard(positionPiece);
@@ -180,8 +180,8 @@ class ChessBoardTest {
         Position passThroughPosition = Position.of('a', 3);
         Position targetPosition = Position.of('a', 4);
         positionPiece.put(sourcePosition, Pawn.colorOf(Color.WHITE));
-        positionPiece.put(passThroughPosition, Empty.of());
-        positionPiece.put(targetPosition, Empty.of());
+        positionPiece.put(passThroughPosition, Empty.EMPTY);
+        positionPiece.put(targetPosition, Empty.EMPTY);
 
         ChessBoard chessBoard = new ChessBoard(positionPiece);
 
@@ -198,7 +198,7 @@ class ChessBoardTest {
         Position targetPosition = Position.of('a', 4);
         positionPiece.put(sourcePosition, Pawn.colorOf(Color.WHITE));
         positionPiece.put(passThroughPosition, Pawn.colorOf(Color.BLACK));
-        positionPiece.put(targetPosition, Empty.of());
+        positionPiece.put(targetPosition, Empty.EMPTY);
 
         ChessBoard chessBoard = new ChessBoard(positionPiece);
 
@@ -214,7 +214,7 @@ class ChessBoardTest {
         Position passThroughPosition = Position.of('a', 3);
         Position targetPosition = Position.of('a', 4);
         positionPiece.put(sourcePosition, Pawn.colorOf(Color.WHITE));
-        positionPiece.put(passThroughPosition, Empty.of());
+        positionPiece.put(passThroughPosition, Empty.EMPTY);
         positionPiece.put(targetPosition, Pawn.colorOf(Color.BLACK));
 
         ChessBoard chessBoard = new ChessBoard(positionPiece);
@@ -230,7 +230,7 @@ class ChessBoardTest {
         Position sourcePosition = Position.of('a', 2);
         Position targetPosition = Position.of('b', 3);
         positionPiece.put(sourcePosition, Pawn.colorOf(Color.WHITE));
-        positionPiece.put(targetPosition, Empty.of());
+        positionPiece.put(targetPosition, Empty.EMPTY);
 
         ChessBoard chessBoard = new ChessBoard(positionPiece);
 
@@ -261,7 +261,7 @@ class ChessBoardTest {
         Position passThroughPosition = Position.of('b', 3);
         Position targetPosition = Position.of('c', 4);
         positionPiece.put(sourcePosition, Pawn.colorOf(Color.WHITE));
-        positionPiece.put(passThroughPosition, Empty.of());
+        positionPiece.put(passThroughPosition, Empty.EMPTY);
         positionPiece.put(targetPosition, Pawn.colorOf(Color.BLACK));
 
         ChessBoard chessBoard = new ChessBoard(positionPiece);

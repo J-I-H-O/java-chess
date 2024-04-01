@@ -31,7 +31,7 @@ public class ChessBoard {
 
     private void movePiece(final Position source, final Position target) {
         chessBoard.put(target, chessBoard.get(source));
-        chessBoard.put(source, Empty.of());
+        chessBoard.put(source, Empty.EMPTY);
     }
 
     private void checkKingDead(final Position targetPosition) {
