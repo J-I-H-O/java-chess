@@ -6,6 +6,7 @@ import chess.domain.ChessGame;
 import chess.domain.Position;
 import chess.domain.ScoreCalculator;
 import chess.domain.piece.Color;
+import chess.service.ChessGameService;
 import chess.view.CommandArguments;
 import chess.view.GameCommand;
 import chess.view.InputView;
@@ -14,12 +15,19 @@ import java.util.function.Supplier;
 
 public class ChessController {
 
+    private final ChessGameService chessGameService;
+
+    public ChessController(final ChessGameService chessGameService) {
+        this.chessGameService = chessGameService;
+    }
+
     public void run() {
         ChessBoard chessBoard = ChessBoardFactory.makeChessBoard();
         ChessGame chessGame = new ChessGame(chessBoard, Color.WHITE);
         OutputView.printCommandInformation();
         CommandArguments commandArguments = repeatUntilSuccess(() -> readCommandBeforeGame());
         GameCommand gameCommand = commandArguments.parseCommand();
+        chessGameService.loadMoveHistory(chessGame);
 
         while (gameCommand != GameCommand.END && !chessGame.isGameOver()) {
             OutputView.printChessBoard(chessBoard);
@@ -60,6 +68,7 @@ public class ChessController {
         Position sourcePosition = Position.from(commandArguments.getFirstArgument());
         Position targetPosition = Position.from(commandArguments.getSecondArgument());
         chessGame.move(sourcePosition, targetPosition);
+        chessGameService.saveMove(sourcePosition, targetPosition);
     }
 
     private void executeStatusCommand(final ChessGame chessGame) {

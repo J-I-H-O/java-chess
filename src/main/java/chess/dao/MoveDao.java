@@ -1,8 +1,8 @@
 package chess.dao;
 
 import chess.database.DbConnection;
+import chess.domain.Move;
 import chess.dto.MoveRequest;
-import chess.dto.MoveResponse;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,16 +25,16 @@ public class MoveDao {
         }
     }
 
-    public List<MoveResponse> findAllMoves() {
+    public List<Move> findAllMoves() {
         String query = "SELECT * FROM move";
 
         try (Connection connection = DbConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            ArrayList<MoveResponse> moves = new ArrayList<>();
+            ArrayList<Move> moves = new ArrayList<>();
             while (resultSet.next()) {
-                moves.add(MoveResponse.of(
+                moves.add(Move.of(
                         resultSet.getString("source"),
                         resultSet.getString("target")));
             }

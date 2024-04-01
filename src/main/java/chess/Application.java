@@ -1,11 +1,15 @@
 package chess;
 
 import chess.controller.ChessController;
+import chess.dao.MoveDao;
+import chess.service.ChessGameService;
 
 public class Application {
 
     public static void main(String[] args) {
-        ChessController chessController = new ChessController();
+        MoveDao moveDao = new MoveDao();
+        ChessGameService chessGameService = new ChessGameService(moveDao);
+        ChessController chessController = new ChessController(chessGameService);
         chessController.run();
     }
 }
