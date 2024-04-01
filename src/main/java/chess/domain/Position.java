@@ -69,4 +69,8 @@ public class Position {
     public char getFile() {
         return file;
     }
+
+    public String getValue() {
+        return "" + file + rank;
+    }
 }
