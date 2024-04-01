@@ -16,69 +16,17 @@ public abstract class Piece {
         this.color = color;
     }
 
-    abstract public List<Position> findPath(final Position source, final Position target, final Direction direction);
-
-    abstract public String getOwnPieceTypeName();
-
-    abstract public boolean isEmpty();
+    public abstract String getOwnPieceTypeName();
 
     public abstract double getPieceScore();
 
-    final protected List<Position> findPathOfSingleMovePiece(final Position source, final Position target,
-                                                             final Direction direction) {
-        List<Position> positions = new ArrayList<>();
+    public abstract List<Position> findPath(final Position source, final Position target, final Direction direction);
 
-        validateDirection(direction);
-
-        Position currentPosition = source;
-        currentPosition = currentPosition.moveTowardDirection(direction);
-        positions.add(currentPosition);
-
-        validateReachability(target, currentPosition);
-
-        return positions;
-    }
-
-    final protected List<Position> findPathOfMultipleMovePiece(final Position source, final Position target,
-                                                               final Direction direction) {
-        List<Position> positions = new ArrayList<>();
-
-        validateDirection(direction);
-
-        Position currentPosition = source;
-        while (currentPosition != target) {
-            currentPosition = currentPosition.moveTowardDirection(direction);
-            positions.add(currentPosition);
-        }
-
-        return positions;
-    }
-
-    final protected void validateDirection(final Direction direction) {
-        if (!directions.contains(direction)) {
-            throw new IllegalArgumentException("[ERROR] 선택한 기물이 이동할 수 없는 방향입니다.");
-        }
-    }
-
-    final protected void validateReachability(final Position target, final Position currentPosition) {
-        if (!currentPosition.equals(target)) {
-            throw new IllegalArgumentException("[ERROR] 선택한 기물은 해당 위치에 도달할 수 없습니다.");
-        }
-    }
-
-    final public boolean canMoveInTargetDirection(final Direction targetDirection) {
+    public final boolean canMoveInTargetDirection(final Direction targetDirection) {
         return directions.contains(targetDirection);
     }
 
-    final public boolean isPawn() {
-        return PieceType.PAWN.name().equals(getOwnPieceTypeName());
-    }
-
-    final public boolean isKing() {
-        return PieceType.KING.name().equals(getOwnPieceTypeName());
-    }
-
-    final public boolean isAlly(final Piece piece) {
+    public final boolean isAlly(final Piece piece) {
         if (piece.isEmpty()) {
             return false;
         }
@@ -88,5 +36,57 @@ public abstract class Piece {
 
     public boolean isSameColorWith(final Color color) {
         return this.color == color;
+    }
+
+    public final boolean isEmpty() {
+        return PieceType.EMPTY.name().equals(getOwnPieceTypeName());
+    }
+
+    public final boolean isPawn() {
+        return PieceType.PAWN.name().equals(getOwnPieceTypeName());
+    }
+
+    public final boolean isKing() {
+        return PieceType.KING.name().equals(getOwnPieceTypeName());
+    }
+
+    protected final List<Position> findPathOfSingleMovePiece(final Position source, final Position target,
+                                                             final Direction direction) {
+        validateDirection(direction);
+
+        List<Position> positions = new ArrayList<>();
+        Position currentPosition = source;
+        currentPosition = currentPosition.moveTowardDirection(direction);
+        positions.add(currentPosition);
+
+        validateReachability(target, currentPosition);
+
+        return positions;
+    }
+
+    protected final List<Position> findPathOfMultipleMovePiece(final Position source, final Position target,
+                                                               final Direction direction) {
+        validateDirection(direction);
+
+        List<Position> positions = new ArrayList<>();
+        Position currentPosition = source;
+        while (currentPosition != target) {
+            currentPosition = currentPosition.moveTowardDirection(direction);
+            positions.add(currentPosition);
+        }
+
+        return positions;
+    }
+
+    protected final void validateDirection(final Direction direction) {
+        if (!directions.contains(direction)) {
+            throw new IllegalArgumentException("[ERROR] 선택한 기물이 이동할 수 없는 방향입니다.");
+        }
+    }
+
+    protected final void validateReachability(final Position target, final Position currentPosition) {
+        if (!currentPosition.equals(target)) {
+            throw new IllegalArgumentException("[ERROR] 선택한 기물은 해당 위치에 도달할 수 없습니다.");
+        }
     }
 }

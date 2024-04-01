@@ -44,11 +44,6 @@ public class Queen extends Piece {
     }
 
     @Override
-    public boolean isEmpty() {
-        return false;
-    }
-
-    @Override
     public double getPieceScore() {
         return 9;
     }
