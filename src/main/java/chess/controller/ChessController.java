@@ -14,30 +14,22 @@ import java.util.function.Supplier;
 
 public class ChessController {
 
-    private final InputView inputView;
-    private final OutputView outputView;
-
-    public ChessController(final InputView inputView, final OutputView outputView) {
-        this.inputView = inputView;
-        this.outputView = outputView;
-    }
-
     public void run() {
         ChessBoard chessBoard = ChessBoardFactory.makeChessBoard();
         ChessGame chessGame = new ChessGame(chessBoard, Color.WHITE);
-        outputView.printCommandInformation();
+        OutputView.printCommandInformation();
         CommandArguments commandArguments = repeatUntilSuccess(() -> readCommandBeforeGame());
         GameCommand gameCommand = commandArguments.parseCommand();
 
         while (gameCommand != GameCommand.END && !chessGame.isGameOver()) {
-            outputView.printChessBoard(chessBoard);
+            OutputView.printChessBoard(chessBoard);
             commandArguments = repeatUntilSuccess(() -> readAndExecuteCommandDuringGame(chessGame));
             gameCommand = commandArguments.parseCommand();
         }
     }
 
     private CommandArguments readCommandBeforeGame() {
-        CommandArguments commandArguments = inputView.readGameCommand();
+        CommandArguments commandArguments = InputView.readGameCommand();
         GameCommand gameCommand = commandArguments.parseCommand();
         validateCommandBeforeGame(gameCommand);
 
@@ -45,7 +37,7 @@ public class ChessController {
     }
 
     private CommandArguments readAndExecuteCommandDuringGame(final ChessGame chessGame) {
-        CommandArguments commandArguments = inputView.readGameCommand();
+        CommandArguments commandArguments = InputView.readGameCommand();
         GameCommand gameCommand = commandArguments.parseCommand();
         validateCommandDuringGame(gameCommand);
         executeCommand(gameCommand, commandArguments, chessGame);
@@ -74,7 +66,7 @@ public class ChessController {
         ScoreCalculator scoreCalculator = new ScoreCalculator();
         double blackScore = chessGame.calculateScoreByColor(scoreCalculator, Color.BLACK);
         double whiteScore = chessGame.calculateScoreByColor(scoreCalculator, Color.WHITE);
-        outputView.printScoreStatus(blackScore, whiteScore);
+        OutputView.printScoreStatus(blackScore, whiteScore);
     }
 
     private void validateCommandBeforeGame(final GameCommand gameCommand) {
@@ -93,7 +85,7 @@ public class ChessController {
         try {
             return reader.get();
         } catch (Exception e) {
-            outputView.printErrorMessage(e.getMessage());
+            OutputView.printErrorMessage(e.getMessage());
             return repeatUntilSuccess(reader);
         }
     }
