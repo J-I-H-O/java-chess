@@ -1,16 +1,12 @@
 package chess.controller;
 
-import chess.domain.ChessBoard;
-import chess.domain.ChessBoardFactory;
-import chess.domain.ChessGame;
-import chess.domain.Position;
-import chess.domain.ScoreCalculator;
 import chess.domain.piece.Color;
 import chess.service.ChessGameService;
 import chess.view.CommandArguments;
 import chess.view.GameCommand;
 import chess.view.InputView;
 import chess.view.OutputView;
+import java.util.Map;
 import java.util.function.Supplier;
 
 public class ChessController {
@@ -22,22 +18,20 @@ public class ChessController {
     }
 
     public void run() {
-        ChessBoard chessBoard = ChessBoardFactory.makeChessBoard();
-        ChessGame chessGame = new ChessGame(chessBoard, Color.WHITE);
         OutputView.printCommandInformation();
         CommandArguments commandArguments = repeatUntilSuccess(() -> readCommandBeforeGame());
         GameCommand gameCommand = commandArguments.parseCommand();
 
-        chessGameService.loadMoveHistory(chessGame);
+        chessGameService.loadMoveHistory();
 
-        while (gameCommand != GameCommand.END && !chessGame.isGameOver()) {
-            OutputView.printChessBoard(chessBoard);
-            commandArguments = repeatUntilSuccess(() -> readAndExecuteCommandDuringGame(chessGame));
+        while (gameCommand != GameCommand.END && !chessGameService.isGameOver()) {
+            OutputView.printChessBoard(chessGameService.findAllPieces());
+            commandArguments = repeatUntilSuccess(() -> readAndExecuteCommandDuringGame());
             gameCommand = commandArguments.parseCommand();
         }
 
-        if (chessGame.isGameOver()) {
-            OutputView.printWinner(chessGame.getCurrentTurnColor());
+        if (chessGameService.isGameOver()) {
+            OutputView.printWinner(chessGameService.getCurrentTurnColor());
             chessGameService.resetGame();
         }
     }
@@ -50,38 +44,23 @@ public class ChessController {
         return commandArguments;
     }
 
-    private CommandArguments readAndExecuteCommandDuringGame(final ChessGame chessGame) {
+    private CommandArguments readAndExecuteCommandDuringGame() {
         CommandArguments commandArguments = InputView.readGameCommand();
         GameCommand gameCommand = commandArguments.parseCommand();
         validateCommandDuringGame(gameCommand);
-        executeCommand(gameCommand, commandArguments, chessGame);
+        executeCommand(gameCommand, commandArguments);
 
         return commandArguments;
     }
 
-    private void executeCommand(final GameCommand gameCommand,
-                                final CommandArguments commandArguments,
-                                final ChessGame chessGame) {
-        if (gameCommand == GameCommand.MOVE) {
-            executeMoveCommand(commandArguments, chessGame);
+    private void executeCommand(final GameCommand gameCommand, final CommandArguments commandArguments) {
+        if (GameCommand.MOVE == gameCommand) {
+            chessGameService.executeMoveCommand(commandArguments);
         }
-        if (gameCommand == GameCommand.STATUS) {
-            executeStatusCommand(chessGame);
+        if (GameCommand.STATUS == gameCommand) {
+            Map<Color, Double> scoreByColor = chessGameService.executeStatusCommand();
+            OutputView.printScoreStatus(scoreByColor);
         }
-    }
-
-    private void executeMoveCommand(final CommandArguments commandArguments, final ChessGame chessGame) {
-        Position sourcePosition = Position.from(commandArguments.getFirstArgument());
-        Position targetPosition = Position.from(commandArguments.getSecondArgument());
-        chessGame.move(sourcePosition, targetPosition);
-        chessGameService.saveMove(sourcePosition, targetPosition);
-    }
-
-    private void executeStatusCommand(final ChessGame chessGame) {
-        ScoreCalculator scoreCalculator = new ScoreCalculator();
-        double blackScore = chessGame.calculateScoreByColor(scoreCalculator, Color.BLACK);
-        double whiteScore = chessGame.calculateScoreByColor(scoreCalculator, Color.WHITE);
-        OutputView.printScoreStatus(blackScore, whiteScore);
     }
 
     private void validateCommandBeforeGame(final GameCommand gameCommand) {

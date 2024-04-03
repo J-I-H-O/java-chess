@@ -4,6 +4,7 @@ import chess.domain.piece.Color;
 import chess.domain.piece.Direction;
 import chess.domain.piece.Empty;
 import chess.domain.piece.Piece;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -100,5 +101,9 @@ public class ChessBoard {
 
     public boolean isKingDead() {
         return isKingDead;
+    }
+
+    public Map<Position, Piece> getChessBoard() {
+        return Collections.unmodifiableMap(chessBoard);
     }
 }

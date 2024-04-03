@@ -1,9 +1,9 @@
 package chess.view;
 
-import chess.domain.ChessBoard;
 import chess.domain.piece.Color;
 import chess.domain.piece.Piece;
 import java.util.List;
+import java.util.Map;
 
 public class OutputView {
 
@@ -17,13 +17,15 @@ public class OutputView {
                 + "> 점수 출력 : status");
     }
 
-    public static void printChessBoard(final ChessBoard chessBoard) {
-        List<Piece> pieces = chessBoard.findAllPieces();
+    public static void printChessBoard(final List<Piece> pieces) {
         String chessBoardExpression = ChessBoardExpression.toExpression(pieces);
         System.out.println(chessBoardExpression);
     }
 
-    public static void printScoreStatus(final double blackScore, final double whiteScore) {
+    public static void printScoreStatus(final Map<Color, Double> scoreByColor) {
+        double blackScore = scoreByColor.get(Color.BLACK);
+        double whiteScore = scoreByColor.get(Color.WHITE);
+
         if (blackScore < whiteScore) {
             System.out.println(String.format("BLACK: %.2f점, WHITE: %.2f점으로 WHITE가 우세합니다.", blackScore, whiteScore));
         }

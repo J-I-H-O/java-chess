@@ -1,6 +1,8 @@
 package chess.domain;
 
 import chess.domain.piece.Color;
+import chess.domain.piece.Piece;
+import java.util.List;
 
 public class ChessGame {
 
@@ -38,5 +40,9 @@ public class ChessGame {
 
     public Color getCurrentTurnColor() {
         return this.turnColor;
+    }
+
+    public List<Piece> findAllPieces() {
+        return chessBoard.findAllPieces();
     }
 }
