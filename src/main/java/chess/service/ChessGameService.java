@@ -1,5 +1,6 @@
 package chess.service;
 
+import chess.dao.ChessGameDao;
 import chess.dao.PieceDao;
 import chess.domain.ChessBoard;
 import chess.domain.ChessBoardFactory;
@@ -17,11 +18,15 @@ import java.util.Map;
 public class ChessGameService {
 
     private final ChessGame chessGame;
+    private final ChessGameDao chessGameDao;
     private final PieceDao pieceDao;
 
-    public ChessGameService(final PieceDao pieceDao) {
+    public ChessGameService(final ChessGameDao chessGameDao, final PieceDao pieceDao) {
         ChessBoard chessBoard = buildChessBoard(pieceDao.findAllPieces());
-        this.chessGame = new ChessGame(chessBoard, Color.WHITE);
+        Color currentTurnColor = chessGameDao.findCurrentTurnColor();
+
+        this.chessGame = new ChessGame(chessBoard, currentTurnColor);
+        this.chessGameDao = chessGameDao;
         this.pieceDao = pieceDao;
     }
 
@@ -39,10 +44,13 @@ public class ChessGameService {
                 .filter(entry -> !entry.getValue().isEmpty())
                 .map(entry -> PieceRequest.from(entry.getKey(), entry.getValue()))
                 .toList();
+        chessGameDao.saveTurnColor(chessGame.getCurrentTurnColor());
+        pieceDao.deleteAll();
         pieceDao.saveAll(pieceRequests);
     }
 
     public void resetGame() {
+        chessGameDao.deleteAll();
         pieceDao.deleteAll();
     }
 

@@ -2,7 +2,7 @@ USE chess;
 
 CREATE TABLE chess_game (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    turn VARCHAR(5) NOT NULL
+    turn_color VARCHAR(5) NOT NULL
 );
 
 CREATE TABLE pieces (
