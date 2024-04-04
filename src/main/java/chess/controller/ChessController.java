@@ -22,8 +22,6 @@ public class ChessController {
         CommandArguments commandArguments = repeatUntilSuccess(() -> readCommandBeforeGame());
         GameCommand gameCommand = commandArguments.parseCommand();
 
-        chessGameService.loadMoveHistory();
-
         while (gameCommand != GameCommand.END && !chessGameService.isGameOver()) {
             OutputView.printChessBoard(chessGameService.findAllPieces());
             commandArguments = repeatUntilSuccess(() -> readAndExecuteCommandDuringGame());
@@ -60,6 +58,9 @@ public class ChessController {
         if (GameCommand.STATUS == gameCommand) {
             Map<Color, Double> scoreByColor = chessGameService.executeStatusCommand();
             OutputView.printScoreStatus(scoreByColor);
+        }
+        if (GameCommand.END == gameCommand) {
+            chessGameService.saveCurrentGame();
         }
     }
 

@@ -3,6 +3,7 @@ package chess.domain;
 import chess.domain.piece.Color;
 import chess.domain.piece.Piece;
 import java.util.List;
+import java.util.Map;
 
 public class ChessGame {
 
@@ -44,5 +45,9 @@ public class ChessGame {
 
     public List<Piece> findAllPieces() {
         return chessBoard.findAllPieces();
+    }
+
+    public Map<Position, Piece> getChessBoard() {
+        return chessBoard.getChessBoard();
     }
 }

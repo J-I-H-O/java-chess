@@ -11,22 +11,39 @@ import chess.domain.piece.Queen;
 import chess.domain.piece.Rook;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class ChessBoardFactory {
 
-    public static ChessBoard makeChessBoard() {
+    public static ChessBoard makeDefaultChessBoard() {
         Map<Position, Piece> chessBoard = new LinkedHashMap<>();
-        chessBoard.putAll(getBlackPiecesExceptPawn());
-        chessBoard.putAll(getBlackPawns());
-        chessBoard.putAll(getBlankPieces());
-        chessBoard.putAll(getWhitePawns());
-        chessBoard.putAll(getWhitePiecesExceptPawn());
+
+        makeEmptyChessBoard(chessBoard);
+        makeInitialChessBoard(chessBoard);
 
         return new ChessBoard(chessBoard);
     }
 
-    private static Map<Position, Piece> getBlackPiecesExceptPawn() {
+    public static ChessBoard makeLoadedChessBoard(final Map<Position, Piece> savedPieces) {
         Map<Position, Piece> chessBoard = new LinkedHashMap<>();
+
+        makeEmptyChessBoard(chessBoard);
+        loadSavedChessBoard(chessBoard, savedPieces);
+
+        return new ChessBoard(chessBoard);
+    }
+
+    // 빈 값으로 모두 초기화
+    private static void makeEmptyChessBoard(final Map<Position, Piece> chessBoard) {
+        for (int rank = 8; rank >= 1; rank--) {
+            for (char file = 'a'; file <= 'h'; file++) {
+                chessBoard.put(Position.of(file, rank), Empty.EMPTY);
+            }
+        }
+    }
+
+    // 초기 체스판 기물 배치
+    private static void makeInitialChessBoard(final Map<Position, Piece> chessBoard) {
         chessBoard.put(Position.of('a', 8), Rook.colorOf(Color.BLACK));
         chessBoard.put(Position.of('b', 8), Knight.colorOf(Color.BLACK));
         chessBoard.put(Position.of('c', 8), Bishop.colorOf(Color.BLACK));
@@ -35,41 +52,12 @@ public class ChessBoardFactory {
         chessBoard.put(Position.of('f', 8), Bishop.colorOf(Color.BLACK));
         chessBoard.put(Position.of('g', 8), Knight.colorOf(Color.BLACK));
         chessBoard.put(Position.of('h', 8), Rook.colorOf(Color.BLACK));
-
-        return chessBoard;
-    }
-
-    private static Map<Position, Piece> getBlackPawns() {
-        Map<Position, Piece> blackPawns = new LinkedHashMap<>();
         for (char file = 'a'; file <= 'h'; file++) {
-            blackPawns.put(Position.of(file, 7), Pawn.colorOf(Color.BLACK));
+            chessBoard.put(Position.of(file, 7), Pawn.colorOf(Color.BLACK));
         }
-
-        return blackPawns;
-    }
-
-    private static Map<Position, Piece> getBlankPieces() {
-        Map<Position, Piece> blankPieces = new LinkedHashMap<>();
-        for (int rank = 6; rank >= 3; rank--) {
-            for (char file = 'a'; file <= 'h'; file++) {
-                blankPieces.put(Position.of(file, rank), Empty.EMPTY);
-            }
-        }
-
-        return blankPieces;
-    }
-
-    private static Map<Position, Piece> getWhitePawns() {
-        Map<Position, Piece> whitePawns = new LinkedHashMap<>();
         for (char file = 'a'; file <= 'h'; file++) {
-            whitePawns.put(Position.of(file, 2), Pawn.colorOf(Color.WHITE));
+            chessBoard.put(Position.of(file, 2), Pawn.colorOf(Color.WHITE));
         }
-
-        return whitePawns;
-    }
-
-    private static Map<Position, Piece> getWhitePiecesExceptPawn() {
-        Map<Position, Piece> chessBoard = new LinkedHashMap<>();
         chessBoard.put(Position.of('a', 1), Rook.colorOf(Color.WHITE));
         chessBoard.put(Position.of('b', 1), Knight.colorOf(Color.WHITE));
         chessBoard.put(Position.of('c', 1), Bishop.colorOf(Color.WHITE));
@@ -78,7 +66,16 @@ public class ChessBoardFactory {
         chessBoard.put(Position.of('f', 1), Bishop.colorOf(Color.WHITE));
         chessBoard.put(Position.of('g', 1), Knight.colorOf(Color.WHITE));
         chessBoard.put(Position.of('h', 1), Rook.colorOf(Color.WHITE));
+    }
 
-        return chessBoard;
+    // DB에 저장된 기물 상태로 배치
+    private static void loadSavedChessBoard(final Map<Position, Piece> chessBoard,
+                                            final Map<Position, Piece> savedPieces) {
+        for (Entry<Position, Piece> positionPieceEntry : savedPieces.entrySet()) {
+            Position position = positionPieceEntry.getKey();
+            Piece piece = positionPieceEntry.getValue();
+
+            chessBoard.put(position, piece);
+        }
     }
 }

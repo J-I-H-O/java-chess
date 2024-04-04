@@ -1,7 +1,13 @@
 USE chess;
 
-CREATE TABLE move (
+CREATE TABLE chess_game (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    source VARCHAR(2) NOT NULL,
-    target VARCHAR(2) NOT NULL
+    turn VARCHAR(5) NOT NULL
+);
+
+CREATE TABLE pieces (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    color VARCHAR(5) NOT NULL,
+    type VARCHAR(6) NOT NULL,
+    position VARCHAR(2) NOT NULL
 );

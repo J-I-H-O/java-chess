@@ -89,4 +89,8 @@ public abstract class Piece {
             throw new IllegalArgumentException("[ERROR] 선택한 기물은 해당 위치에 도달할 수 없습니다.");
         }
     }
+
+    public Color getColor() {
+        return color;
+    }
 }

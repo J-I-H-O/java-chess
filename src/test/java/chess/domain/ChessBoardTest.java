@@ -23,7 +23,7 @@ class ChessBoardTest {
     @Test
     @DisplayName("생성 테스트")
     void create() {
-        assertThatCode(ChessBoardFactory::makeChessBoard)
+        assertThatCode(ChessBoardFactory::makeDefaultChessBoard)
                 .doesNotThrowAnyException();
     }
 
@@ -43,7 +43,7 @@ class ChessBoardTest {
     @Test
     @DisplayName("대상 위치에 존재하는 기물을 타켓 위치로 옮긴다.")
     void movePiece() {
-        ChessBoard chessBoard = ChessBoardFactory.makeChessBoard();
+        ChessBoard chessBoard = ChessBoardFactory.makeDefaultChessBoard();
         Position source = Position.of('b', 2);
         Position target = Position.of('b', 3);
         Piece pieceBeforeMove = chessBoard.findPieceByPosition(source);
@@ -57,7 +57,7 @@ class ChessBoardTest {
     @Test
     @DisplayName("기물이 이동하면 기존 위치에는 기물이 존재하지 않게 된다.")
     void noPieceOnSourcePositionWhenPieceMoves() {
-        ChessBoard chessBoard = ChessBoardFactory.makeChessBoard();
+        ChessBoard chessBoard = ChessBoardFactory.makeDefaultChessBoard();
         Position source = Position.of('b', 2);
         Position target = Position.of('b', 3);
 
